@@ -106,46 +106,64 @@ Config.collectableObjects = {
     ['goldencurrant_p'] = { -- Object where you have to collect
         Label = "Currant Bush", -- label which will be displayed
         items = { -- here you can define which items you can harvest on this object
-           -- ['currant'] = 2 -- ['DB_ItemName'] = HowMuchItemsYouCanMaxGet
+            ['currant'] = 2 -- ['DB_ItemName'] = HowMuchItemsYouCanMaxGet
         }
     },
     ['blackcurrant_p'] = {
         Label = "Currant Bush",
         items = {
-          --  ['currant'] = 2
+            ['currant'] = 2
         }
     },
     ['rdr_bush_sumac_aa_sim'] = {
         Label = "Currant Bush",
         items = {
-          --  ['currant'] = 2,
-         --   ['consumable_pear'] = 2
+            ['currant'] = 2,
+            ['consumable_pear'] = 2
         }
     },
     ['p_tree_orange_01'] = {
         Label = "Fruit Tree",
         items = {
-         --   ['apple'] = 2,
-         --   ['pear'] = 2,
-         --   ['consumable_peach'] = 2
+            ['apple'] = 2,
+            ['pear'] = 2,
+            ['consumable_peach'] = 2
         }
     },
     ['p_tree_maple_s_04'] = {
         Label = "Apple Tree",
         items = {
-          --  ['apple'] = 3
+            ['apple'] = 3
         }
     },
     ['s_inv_huckleberry01x'] = {
         Label = "Blueberries Shrub",
         items = {
-           -- ['blackberry'] = 2
+            ['blackberry'] = 2
+        }
+    },
+    ['s_inv_alaskanginseng01x'] = {
+        Label = "Alaskan Ginseng",
+        items = {
+            ['Alaskan_Ginseng'] = 2
+        }
+    },
+    ['s_inv_ginseng01x'] = {
+        Label = "American Ginseng",
+        items = {
+            ['American_Ginseng'] = 2
+        }
+    },
+    ['s_inv_baybolete'] = {
+        Label = "Bay Bolete",
+        items = {
+            ['Bay_Bolete'] = 2
         }
     },
     ['s_inv_raspberry01x'] = {
         Label = "Raspberries Shrub",
         items = {
-           -- ['blackberry'] = 2
+            ['blackberry'] = 2
         }
     }
 }
