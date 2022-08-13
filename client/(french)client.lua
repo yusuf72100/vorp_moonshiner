@@ -14,6 +14,7 @@ local placedBarrelProp
 local BuildPrompt
 local DelPrompt
 local inplacing = false
+local destroying = false
 local prompt, prompt2 = false, false
 
 --############################## Interaction Menu ##############################--
@@ -47,14 +48,14 @@ Citizen.CreateThread(function()
         local isNearStill = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.brewProp), true)
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
-		if  isNearStill and inplacing == false then 
+		if  isNearStill and inplacing == false and destroying == false then 
             DrawTxt("Appuyez sur [~e~G~q~] pour le menu d'alcool", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('still')
 			end
         end
         
-        if  isNearBarrel and isProcessingMash == false and inplacing == false then 
+        if  isNearBarrel and isProcessingMash == false and inplacing == false and destroying == false  then 
             DrawTxt("Appuyez sur [~e~G~q~] pour créer du moût", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('barrel')
@@ -305,6 +306,7 @@ end)
 -- destroying the barrel / destillery prop and give it back to the player
 RegisterNetEvent('moonshiner:deleteprop')
 AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
+	destroying = true
     local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
     local playerPed = PlayerPedId()
     local prop = GetClosestObjectOfType(xpos, ypos, zpos, 1.0, GetHashKey(object), false, false, false)
@@ -327,7 +329,7 @@ AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
 
         TriggerEvent("vorp:TipBottom", "Vous avez récupéré le baril", 4000)
     end
-
+	destroying = false
 end)
 
 -- producing the mash

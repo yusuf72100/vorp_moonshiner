@@ -14,6 +14,7 @@ local placedBarrelProp
 local BuildPrompt
 local DelPrompt
 local inplacing = false
+local destroying = false
 local prompt, prompt2 = false, false
 
 --############################## Interaction Menu ##############################--
@@ -47,15 +48,15 @@ Citizen.CreateThread(function()
         local isNearStill = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.brewProp), true)
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
-		if  isNearStill and inplacing == false then 
+		if  isNearStill and inplacing == false and destroying == false then 
             DrawTxt("Press [~e~G~q~] for the alcohol menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('still')
 			end
         end
         
-        if  isNearBarrel and isProcessingMash == false and inplacing == false then 
-            DrawTxt("Press [~e~G~q~] for the mash menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
+        if  isNearBarrel and isProcessingMash == false and inplacing == false and destroying == false  then 
+            DrawTxt("Press [~e~G~q~] for the Mash menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('barrel')
 			end
@@ -267,7 +268,7 @@ AddEventHandler('moonshiner:placeProp', function(propName)
                 placedStill = true
 
                 TriggerServerEvent('moonshiner:todb', Config.brewProp, pPos.x, pPos.y, pPos.z)
-                TriggerEvent("vorp:TipBottom", "You placed an still", 4000)
+                TriggerEvent("vorp:TipBottom", "Vous avez placé la distillerie", 4000)
                 inplacing = false
             else
                 --placedBarrelProp = CreateObject(object, pPos.x, pPos.y, pPos.z, true, true, false)
@@ -275,7 +276,7 @@ AddEventHandler('moonshiner:placeProp', function(propName)
                 placedBarrel = true
 
                 TriggerServerEvent('moonshiner:todb', Config.mashProp, pPos.x, pPos.y, pPos.z)
-                TriggerEvent("vorp:TipBottom", "You placed an barrel", 4000)
+                TriggerEvent("vorp:TipBottom", "Vous avez placé le baril", 4000)
                 inplacing = false
             end
 
@@ -305,6 +306,7 @@ end)
 -- destroying the barrel / destillery prop and give it back to the player
 RegisterNetEvent('moonshiner:deleteprop')
 AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
+	destroying = true
     local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
     local playerPed = PlayerPedId()
     local prop = GetClosestObjectOfType(xpos, ypos, zpos, 1.0, GetHashKey(object), false, false, false)
@@ -321,13 +323,13 @@ AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
 
     if object == Config.brewProp then
 
-        TriggerEvent("vorp:TipBottom", "You take back an still", 4000)
+        TriggerEvent("vorp:TipBottom", "Vous avez récupéré la distillerie", 4000)
 
     else
 
-        TriggerEvent("vorp:TipBottom", "You take back an barrel", 4000)
+        TriggerEvent("vorp:TipBottom", "Vous avez récupéré le baril", 4000)
     end
-
+	destroying = false
 end)
 
 -- producing the mash
