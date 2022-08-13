@@ -49,6 +49,7 @@ Citizen.CreateThread(function()
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
 		if  isNearStill and inplacing == false and destroying == false then 
+            local prop = GetClosestObjectOfType(x1, y1, z1, 1.0, GetHashKey(object), false, false, false)
             DrawTxt("Press [~e~G~q~] for the alcohol menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('still')
@@ -241,6 +242,7 @@ AddEventHandler('moonshiner:placeProp', function(propName)
     AttachEntityToEntity(tempObj, myPed, 0, 0.0, 1.0, -0.7, 0.0, 0.0, 0.0, true, false, false, false, false)
     while placing do
         Wait(10)
+        SetEntityLocallyVisible(tempObj)
         SetEntityHeading(tempObj, GetEntityHeading(PlayerPedId()))
         if prompt == false then
             PromptSetEnabled(BuildPrompt, true)

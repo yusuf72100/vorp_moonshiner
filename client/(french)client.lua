@@ -241,6 +241,7 @@ AddEventHandler('moonshiner:placeProp', function(propName)
     AttachEntityToEntity(tempObj, myPed, 0, 0.0, 1.0, -0.7, 0.0, 0.0, 0.0, true, false, false, false, false)
     while placing do
         Wait(10)
+        SetEntityLocallyVisible(tempObj)
         SetEntityHeading(tempObj, GetEntityHeading(PlayerPedId()))
         if prompt == false then
             PromptSetEnabled(BuildPrompt, true)

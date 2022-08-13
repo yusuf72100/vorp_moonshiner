@@ -194,7 +194,7 @@ AddEventHandler("moonshiner:getCoordsId", function(x, y, z)
 end)
 
 RegisterServerEvent('moonshiner:updateProps')
-AddEventHandler("moonshiner:updateProps", function()
+AddEventHandler("moonshiner:updateProps", function(prop)
     local _source = source
     local shacks = {}
 
@@ -206,7 +206,6 @@ AddEventHandler("moonshiner:updateProps", function()
             TriggerClientEvent("moonshiner:replaceProps", _source, v.object, v.xpos, v.ypos, v.zpos, v.actif)
         end
     end)
-
 end)
 
 RegisterServerEvent('moonshiner:innactif')
