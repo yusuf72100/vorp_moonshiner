@@ -1,5 +1,7 @@
 local VorpCore = {}
 local loaded = false
+local cooldown = {}
+local items = {}
 
 TriggerEvent("getCore",function(core)
     VorpCore = core
@@ -7,6 +9,38 @@ end)
 Inventory = exports.vorp_inventory:vorp_inventoryApi()
 
 --############################## Server Callbacks ##############################--
+
+--get all items related to the object
+RegisterServerEvent('moonshiner:getItems')
+AddEventHandler("moonshiner:getItems", function(value, label, items)
+    local _source = source
+
+    for k,v in pairs(items) do
+        Wait(100)
+
+        items[#items+1] = {object=value, lab=label, name=k, count=v}
+    end
+end)
+
+--get all items related to the object
+RegisterServerEvent('moonshiner:initPlants')
+AddEventHandler("moonshiner:initPlants", function(point, plant)
+    local _source = source
+    cooldown[#cooldown+1] = {object=plant, x=point.x, y=point.y, z=point.z, cooldown=0}
+end)
+
+RegisterServerEvent('moonshiner:goToCheckPrompt')
+AddEventHandler("moonshiner:goToCheckPrompt", function(distance)
+    local _source = source
+    TriggerClientEvent("moonshiner:checkPrompt", _source, distance)
+end)
+
+RegisterServerEvent('moonshiner:getPlants')
+AddEventHandler("moonshiner:getPlants", function()
+    local _src = source
+    TriggerClientEvent("moonshiner:placePlants", _src, cooldown, items)
+end)
+
 -- check items for mash in inventory
 RegisterServerEvent('moonshiner:check_mashItems')
 AddEventHandler("moonshiner:check_mashItems", function(mash, itemArray, time, minXP, maxXP, message)
@@ -78,13 +112,7 @@ AddEventHandler("moonshiner:giveMoonshine", function(moonshineName, minXP, maxXP
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local identifier = Character.identifier
     local charidentifier = Character.charIdentifier
-    exports["ghmattimysql"]:execute("SELECT clanid FROM characters WHERE identifier = @identifier,charidentifier = @charidentifier", { ["@identifier"] = identifier,["@charidentifier"] = charidentifier }, function(result)
-        if result[1].clanid ~= nil then
-            local clanid = result[1].clanid
-            local exp = xp
-            exports.ghmattimysql:execute("UPDATE camp Set exp=exp+@exp WHERE clanid=@clanid", {['clanid'] = clanid,['exp'] = exp})
-        end
-    end)
+    
     Inventory.addItem(_source, moonshineName, 1)
 end)
 
@@ -94,20 +122,13 @@ AddEventHandler("moonshiner:giveMash", function(mashName, minXP, maxXP)
     local xp = math.random(minXP, maxXP)
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local charidentifier = Character.charIdentifier
-    exports["ghmattimysql"]:execute("SELECT clanid FROM characters WHERE identifier = @identifier,charidentifier = @charidentifier", { ["@identifier"] = identifier,["@charidentifier"] = charidentifier }, function(result)
-        if result[1].clanid ~= nil then
-            local clanid = result[1].clanid
-            local exp = xp
-            exports.ghmattimysql:execute("UPDATE camp Set exp=exp+@exp WHERE clanid=@clanid", {['clanid'] = clanid,['exp'] = exp})
-        end
-    end)
+
     Inventory.addItem(_source, mashName, 1)
 end)
 
 RegisterServerEvent('moonshiner:givePropBack')
 AddEventHandler("moonshiner:givePropBack", function(propName)
     local _source = source
-
     Inventory.addItem(_source, propName, 1)
 end)
 
@@ -194,7 +215,7 @@ AddEventHandler("moonshiner:getCoordsId", function(x, y, z)
 end)
 
 RegisterServerEvent('moonshiner:updateProps')
-AddEventHandler("moonshiner:updateProps", function(prop)
+AddEventHandler("moonshiner:updateProps", function()
     local _source = source
     local shacks = {}
 
@@ -206,6 +227,7 @@ AddEventHandler("moonshiner:updateProps", function(prop)
             TriggerClientEvent("moonshiner:replaceProps", _source, v.object, v.xpos, v.ypos, v.zpos, v.actif)
         end
     end)
+
 end)
 
 RegisterServerEvent('moonshiner:innactif')
