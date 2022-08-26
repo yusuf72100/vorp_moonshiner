@@ -141,36 +141,23 @@ Citizen.CreateThread(function()
 
     while true do 
         --for k,value in pairs(Config.collectablePlants) do
-                
-        Citizen.Wait(near)
-            local player = PlayerPedId()
-            local Coords = GetEntityCoords(player)
-            local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
-            local blackcurrant = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("blackcurrant_p"), 0) 
-            local Huckleberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_huckleberry01x"), 0) 
-            local Mint = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("wildmint_p"), 0) 
-            local AmGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("ginseng_p"), 0) 
-            local AlGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("alaskanginseng_p"), 0) 
-            local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
-            local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
-            
 
-            Citizen.Wait(near)
-            local player = PlayerPedId()
-            local mount = IsPedOnMount(player)
-            local ragdol = IsPedRagdoll(player)
-            local isdead = IsEntityDead(player)
-            local cuffed = Citizen.InvokeNative(0x3AA24CCC0D451379, player)
-            local reloading = IsPedReloading(player)
-            local Coords = GetEntityCoords(player)
-            local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
-            local blackcurrant = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("blackcurrant_p"), 0) 
-            local Huckleberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_huckleberry01x"), 0) 
-            local Mint = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("wildmint_p"), 0) 
-            local AmGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("ginseng_p"), 0) 
-            local AlGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("alaskanginseng_p"), 0) 
-            local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
-            local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
+        Citizen.Wait(near)
+        local player = PlayerPedId()
+        local mount = IsPedOnMount(player)
+        local ragdol = IsPedRagdoll(player)
+        local isdead = IsEntityDead(player)
+        local cuffed = Citizen.InvokeNative(0x3AA24CCC0D451379, player)
+        local reloading = IsPedReloading(player)
+        local Coords = GetEntityCoords(player)
+        local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
+        local blackcurrant = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("blackcurrant_p"), 0) 
+        local Huckleberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_huckleberry01x"), 0) 
+        local Mint = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("wildmint_p"), 0) 
+        local AmGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("ginseng_p"), 0) 
+        local AlGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("alaskanginseng_p"), 0) 
+        local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
+        local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
             
 
         if baybolete and not mount and not ragdol and not cuffed and not reloading and not isdead then
@@ -357,6 +344,7 @@ Citizen.CreateThread(function()
                 ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("blackcurrant_p"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "blackcurrant_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
                 TriggerServerEvent("vorp_moonshine:addItemblack")
 
                 Wait(2000)
