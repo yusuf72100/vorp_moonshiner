@@ -159,7 +159,8 @@ Citizen.CreateThread(function()
             local player = PlayerPedId()
             local mount = IsPedOnMount(player)
             local ragdol = IsPedRagdoll(player)
-            local cuffed = IsPedCuffed(player)
+            local isdead = IsEntityDead(player)
+            local cuffed = Citizen.InvokeNative(0x3AA24CCC0D451379, player)
             local reloading = IsPedReloading(player)
             local Coords = GetEntityCoords(player)
             local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
@@ -172,7 +173,7 @@ Citizen.CreateThread(function()
             local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
             
 
-        if baybolete and not mount and not ragdol and not cuffed and not reloading then
+        if baybolete and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -199,7 +200,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if blackberry and not mount and not ragdol and not cuffed and not reloading then
+        if blackberry and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -227,7 +228,7 @@ Citizen.CreateThread(function()
         end
 
 
-        if Huckleberry and not mount and not ragdol and not cuffed and not reloading then
+        if Huckleberry and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -254,7 +255,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if Mint and not mount and not ragdol and not cuffed and not reloading then
+        if Mint and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -281,7 +282,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if AmGinseng and not mount and not ragdol and not cuffed and not reloading then
+        if AmGinseng and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -308,7 +309,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if AlGinseng and not mount and not ragdol and not cuffed and not reloading then
+        if AlGinseng and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -335,7 +336,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if blackcurrant and not mount and not ragdol and not cuffed and not reloading then 
+        if blackcurrant and not mount and not ragdol and not cuffed and not reloading and not isdead then 
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
@@ -362,7 +363,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        if raspberry and not mount and not ragdol and not cuffed and not reloading then
+        if raspberry and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
             PromptSetActiveGroupThisFrame(buttons_prompt, plant)
