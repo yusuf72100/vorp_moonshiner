@@ -469,11 +469,11 @@ AddEventHandler('vorp_moonshine:addItemraspberry', function()
             local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_red_raspberry", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_red_raspberry", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_red_raspberry", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_red_raspberry", 3000)
             end
 		end
     end
@@ -490,11 +490,11 @@ AddEventHandler('vorp_moonshine:addItembay', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_bay_bolete", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_bay_bolete", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_bay_bolete", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_bay_bolete", 3000)
             end
 		end
     end
@@ -511,11 +511,11 @@ AddEventHandler('vorp_moonshine:addItemginseng', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_american_ginseng", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_american_ginseng", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_american_ginseng", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_american_ginseng", 3000)
             end
 		end
     end
@@ -532,11 +532,11 @@ AddEventHandler('vorp_moonshine:addItemblackberry', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_black_berry", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_black_berry", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_black_berry", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_black_berry", 3000)
             end
 		end
     end
@@ -553,11 +553,11 @@ AddEventHandler('vorp_moonshine:addItemmint', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_wild_mint", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_wild_mint", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_wild_mint", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_wild_mint", 3000)
             end
 		end
     end
@@ -573,11 +573,11 @@ AddEventHandler('vorp_moonshine:addItemhuck', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_evergreen_huckleberry", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_evergreen_huckleberry", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_evergreen_huckleberry", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_evergreen_huckleberry", 3000)
             end
 		end
     end
@@ -593,11 +593,11 @@ AddEventHandler('vorp_moonshine:addItemalgin', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_alaskan_ginseng", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_alaskan_ginseng", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_alaskan_ginseng", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_alaskan_ginseng", 3000)
             end
 		end
     end
@@ -614,11 +614,11 @@ AddEventHandler('vorp_moonshine:addItemblack', function()
 			local amount = math.random(v.min, v.max)
             local invAvailable = VorpInv.canCarryItems(_source, amount)
             if invAvailable ~= true then
-                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_black_currant", 3000)
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous ne pouvez pas porter plus de ~o~"..v.name, "INVENTORY_ITEMS", "consumable_herb_black_currant", 3000)
             else
                 VorpInv.addItem(source, FinalLoot, amount)
 			    LootsToGive = {}
-			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_black_currant", 3000)
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collecte","Vous avez obtenu ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "consumable_herb_black_currant", 3000)
             end
 		end
     end

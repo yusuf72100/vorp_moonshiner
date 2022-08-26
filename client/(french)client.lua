@@ -16,9 +16,43 @@ local DelPrompt
 local inplacing = false
 local destroying = false
 local prompt, prompt2 = false, false
+local areaCreated = false
+local visiblePrompt = false
+local itemToCollect = nil      
+local itemCount = nil
+local itemProp = nil
+local inMenu = false
+local plantPrompt
+local buttons_prompt = GetRandomIntInRange(0, 0xffffff)
+local near = 1000
+local tick = false
+local placed = false
+local picking = false
+local grow = false
+local rid = nil
+local initId = false
 
 --############################## Interaction Menu ##############################--
 -- interact with object
+
+--same function of herbs script
+
+
+function SetupPlantPrompt()
+	Citizen.CreateThread(function()
+		local str = 'Récolter'
+		plantPrompt = Citizen.InvokeNative(0x04F97DE45A519419)
+		PromptSetControlAction(plantPrompt, 0xE30CD707)
+        str = CreateVarString(10, 'LITERAL_STRING', str)
+        PromptSetText(plantPrompt, str)
+        PromptSetEnabled(plantPrompt, true)
+        PromptSetVisible(plantPrompt, true)
+        PromptSetHoldMode(plantPrompt, true)
+        PromptSetGroup(plantPrompt, buttons_prompt)
+        PromptRegisterEnd(plantPrompt)
+	end)
+end 
+
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
     local str = CreateVarString(10, "LITERAL_STRING", str)
@@ -30,21 +64,327 @@ function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
     DisplayText(str, x, y)
 end
 
+--props update thread and areas create
 Citizen.CreateThread(function()
     SetupBuildPrompt()
     SetupDelPrompt()
+    
 	while true do
-		Citizen.Wait(1000)
+		Citizen.Wait(100)
         TriggerServerEvent("moonshiner:updateProps")
+        Wait(100)
+
+        if initId == false then
+            local ped = PlayerPedId()
+            local netid = PedToNet(ped)
+            TriggerServerEvent("takeid", netid)
+        end
 	end
+
 end)
 
+Citizen.CreateThread(function()
+
+	while true do
+		Citizen.Wait(1000)
+        TriggerServerEvent("moonshiner:updatePlants")
+    end
+end)
+
+RegisterNetEvent("giveplayerid")
+AddEventHandler("giveplayerid", function(player)
+	Wait(500)
+    rid = player
+    initId = true
+end)
+
+
+RegisterNetEvent('moonshiner:placePlants')
+AddEventHandler('moonshiner:placePlants', function(object, x, y, z, cooldown)
+    Citizen.Wait(100)
+    local ped = PlayerPedId()
+    local radius = 50.0
+    local entityCoords = GetEntityCoords(ped, true)
+    local distance = Vdist(x, y, z, entityCoords.x, entityCoords.y, entityCoords.z)
+
+    if distance <= radius then
+        if DoesObjectOfTypeExistAtCoords(x, y, z, 1.0, GetHashKey(object), false) then
+            if cooldown > 0 then
+                local prop = GetClosestObjectOfType(x, y, z, 1.0, GetHashKey(object), false, false, false)
+                DeleteObject(prop)
+                Wait(100)
+            end
+        else
+            if cooldown <= 0 then
+                local tempObj = CreateObject(GetHashKey(object), x, y, z, false, false, false)
+                PlaceObjectOnGroundProperly(tempObj)
+                placed = true
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('moonshiner:forceDeletePlants')
+AddEventHandler('moonshiner:forceDeletePlants', function()
+	for k,v in pairs(Config.collectablePlants) do
+        Wait(100)
+        while DoesObjectOfTypeExistAtCoords(v.point.x, v.point.y, v.point.z, 1.0, GetHashKey(v.plant), 0) do
+            local prop = GetClosestObjectOfType(v.point.x, v.point.y, v.point.z, 1.0, GetHashKey(v.plant), false, false, false)
+            DeleteObject(prop)
+        end
+    end
+end)
+
+
+Citizen.CreateThread(function()
+	SetupPlantPrompt()
+
+    while true do 
+        --for k,value in pairs(Config.collectablePlants) do
+                
+        Citizen.Wait(near)
+            local player = PlayerPedId()
+            local mount = IsPedOnMount(player)
+            local ragdol = IsPedRagdoll(player)
+            local cuffed = IsPedCuffed(player)
+            local reloading = IsPedReloading(player)
+            local Coords = GetEntityCoords(player)
+            local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
+            local blackcurrant = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("blackcurrant_p"), 0) 
+            local Huckleberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_huckleberry01x"), 0) 
+            local Mint = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("wildmint_p"), 0) 
+            local AmGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("ginseng_p"), 0) 
+            local AlGinseng = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("alaskanginseng_p"), 0) 
+            local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
+            local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
+            
+
+        if baybolete and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_baybolete01bx"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "s_inv_baybolete01bx", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItembay")
+
+                Wait(2000)
+            end
+        end
+
+        if blackberry and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_blackberry01x"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "s_inv_blackberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemblackberry")
+
+                Wait(2000)
+            end
+        end
+
+
+        if Huckleberry and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_huckleberry01x"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "s_inv_huckleberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemhuck")
+
+                Wait(2000)
+            end
+        end
+
+        if Mint and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("wildmint_p"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "wildmint_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemmint")
+
+                Wait(2000)
+            end
+        end
+
+        if AmGinseng and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("ginseng_p"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "ginseng_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemginseng")
+
+                Wait(2000)
+            end
+        end
+
+        if AlGinseng and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("alaskanginseng_p"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "alaskanginseng_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemalgin")
+
+                Wait(2000)
+            end
+        end
+
+        if blackcurrant and not mount and not ragdol and not cuffed and not reloading then 
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                TriggerServerEvent("moonshiner:searchPlant", "blackcurrant_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("blackcurrant_p"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("vorp_moonshine:addItemblack")
+
+                Wait(2000)
+            end
+        end
+
+        if raspberry and not mount and not ragdol and not cuffed and not reloading then
+            near = 5
+            local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
+            PromptSetActiveGroupThisFrame(buttons_prompt, plant)
+
+            if PromptHasHoldModeCompleted(plantPrompt) then
+                local playerPed = PlayerPedId()
+                local Coords = GetEntityCoords(playerPed, true)
+
+                RequestAnimDict("mech_pickup@plant@burdock")
+                while not HasAnimDictLoaded("mech_pickup@plant@burdock") do
+                    Wait(100)
+                end
+
+                TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_raspberry01x"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
+                TriggerServerEvent("moonshiner:searchPlant", "s_inv_raspberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                TriggerServerEvent("vorp_moonshine:addItemraspberry")
+
+                Wait(2000)
+            end
+        end
+    end
+end)
+
+--open menu thread
 Citizen.CreateThread(function()
     SetupBuildPrompt()
     SetupDelPrompt()
 	while true do
 		Citizen.Wait(1)
-		local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
+		local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))    
         local isNearStill = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.brewProp), true)
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
@@ -77,12 +417,55 @@ AddEventHandler('moonshiner:replaceProps', function(object, x1, y1, z1, actif)
             --we do nothing
         else
             if actif == 1 then
-                print("Object updated:", object, x1, y1, z1)
+                --print("Object updated:", object, x1, y1, z1)
                 DeleteObject(prop)
 
                 local tempObj = CreateObject(GetHashKey(object), x1, y1, z1, true, true, false)
                 PlaceObjectOnGroundProperly(tempObj)
             else  
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('moonshiner:comparePlantsCoords')
+AddEventHandler('moonshiner:comparePlantsCoords', function(x1, y1, z1, x2, y2, z2, object)
+    local distance = Vdist(x1, y1, z1, x2, y2, z2)
+
+    if distance <= 1.0 then
+        TriggerServerEvent("moonshiner:cooldown60", object, x2, y2, z2)
+
+    end
+
+end)
+
+RegisterNetEvent('moonshiner:replacePlants')
+AddEventHandler('moonshiner:replacePlants', function(object, x1, y1, z1, cooldown)
+    local prop = GetClosestObjectOfType(x1, y1, z1, 1.0, GetHashKey(object), false, false, false)
+    local ped = PlayerPedId()
+    local radius = 20.0
+    local entityCoords = GetEntityCoords(ped, true)
+    local distance = Vdist(x1, y1, z1, entityCoords)
+
+    if distance <= radius then
+        if DoesObjectOfTypeExistAtCoords(x1, y1, z1, 1.0, GetHashKey(object), false) then
+            if cooldown > 0 then
+                DeleteObject(prop)
+                Wait(1000)
+                TriggerServerEvent("moonshiner:updateCooldown", object, x1, y1, z1, cooldown)
+            end
+        else
+            if cooldown == 0 then
+                --print("Object updated:", object, x1, y1, z1)
+                DeleteObject(prop)
+
+                local tempObj = CreateObject(GetHashKey(object), x1, y1, z1, true, true, false)
+                PlaceObjectOnGroundProperly(tempObj)
+            else 
+                if cooldown > 0 then
+                    Wait(1000)
+                    TriggerServerEvent("moonshiner:updateCooldown", object, x1, y1, z1, cooldown)
+                end
             end
         end
     end
@@ -238,10 +621,11 @@ AddEventHandler('moonshiner:placeProp', function(propName)
     local tempObj = CreateObject(object, pos.x, pos.y, pos.z, true, true, false)
     SetEntityHeading(tempObj, pHead)
     SetEntityAlpha(tempObj, 51)
+    --SetEntityVisible(tempObj, false)
     AttachEntityToEntity(tempObj, myPed, 0, 0.0, 1.0, -0.7, 0.0, 0.0, 0.0, true, false, false, false, false)
     while placing do
         Wait(10)
-        SetEntityLocallyVisible(tempObj)
+        --SetEntityLocallyVisible(tempObj)
         SetEntityHeading(tempObj, GetEntityHeading(PlayerPedId()))
         if prompt == false then
             PromptSetEnabled(BuildPrompt, true)
@@ -331,6 +715,13 @@ AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
         TriggerEvent("vorp:TipBottom", "Vous avez récupéré le baril", 4000)
     end
 	destroying = false
+end)
+
+RegisterNetEvent('moonshiner:deleteplant')
+AddEventHandler('moonshiner:deleteplant', function(id, object, xpos, ypos, zpos)
+    local prop = GetClosestObjectOfType(xpos, ypos, zpos, 1.0, GetHashKey(object), false, false, false)
+
+    DeleteObject(prop)
 end)
 
 -- producing the mash
@@ -438,4 +829,13 @@ function SetupDelPrompt()
         PromptRegisterEnd(DelPrompt)
     end)
 end
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        print("reset plants")
+        --TriggerEvent("moonshiner:forceDeletePlants") 
+        --TriggerServerEvent("moonshiner:emptyTable")
+    end
+end)
 --############################## END Functions ##############################--
+
