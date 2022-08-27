@@ -391,14 +391,14 @@ Citizen.CreateThread(function()
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
 		if  isNearStill and inplacing == false and destroying == false then 
-            DrawTxt("Press [~e~G~q~] for alcohol menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
+            DrawTxt("Press [~e~G~q~] for create alcohol", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('still')
 			end
         end
         
         if  isNearBarrel and isProcessingMash == false and inplacing == false and destroying == false  then 
-            DrawTxt("Press [~e~G~q~] for mash menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
+            DrawTxt("Press [~e~G~q~] for create mash", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('barrel')
 			end
