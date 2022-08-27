@@ -10,10 +10,21 @@ Inventory = exports.vorp_inventory:vorp_inventoryApi()
 
 --############################## Server Callbacks ##############################--
 
+--get all items related to the object
+
+
+
+RegisterServerEvent('moonshiner:initPlants')
+AddEventHandler("moonshiner:initPlants", function(pointx, pointy, pointz, plant, rid)
+    cooldown[#cooldown+1] = {pedid = rid, object=plant, x=pointx, y=pointy, z=pointz, cooldown=0}
+    print(#cooldown, cooldown[#cooldown].pedid, cooldown[#cooldown].object, cooldown[#cooldown].x, cooldown[#cooldown].z, cooldown[#cooldown].z, cooldown[#cooldown].cooldown)
+end)
+
 RegisterServerEvent('moonshiner:setCooldown')
 AddEventHandler("moonshiner:setCooldown", function(hash, x, y, z, rid)
     local shacks = {}
     local _source = source
+    print(hash, x, y, z)
     exports.ghmattimysql:execute('SELECT * FROM moonshiner_plants WHERE object = ? AND xpos like ? AND ypos like ? AND zpos like ? ;', 
     {
         hash,
@@ -26,6 +37,7 @@ AddEventHandler("moonshiner:setCooldown", function(hash, x, y, z, rid)
             shacks = result
             for i,v in pairs (shacks) do
                 --TriggerEvent("moonshiner:innactif", v.id, v.object, v.xpos, v.ypos, v.zpos)
+                print(v.id)
                 setPlantCooldown(_source, v.id, v.object, v.xpos, v.ypos, v.zpos)
             end
         end
@@ -41,6 +53,7 @@ AddEventHandler("moonshiner:searchPlant", function(hash, x, y, z, rid)
         if(#result ~= 0)then
             shacks = result
             for i,v in pairs (shacks) do
+                print(v.xpos, v.ypos, v.zpos, v.object)
                 TriggerClientEvent("moonshiner:comparePlantsCoords", _source, x, y, z, v.xpos, v.ypos, v.zpos, v.object)
             end
         end
@@ -85,6 +98,7 @@ AddEventHandler("moonshiner:cooldown60", function(object, x, y, z)
             shacks = result
             for i,v in pairs (shacks) do
                 --TriggerEvent("moonshiner:innactif", v.id, v.object, v.xpos, v.ypos, v.zpos)
+                print("updated")
                 resetCooldown(v.id, v.cooldown)
             end
         end
@@ -108,6 +122,7 @@ AddEventHandler("moonshiner:updateCooldown", function(object, x, y, z)
             shacks = result
             for i,v in pairs (shacks) do
                 --TriggerEvent("moonshiner:innactif", v.id, v.object, v.xpos, v.ypos, v.zpos)
+                print("updated")
                 updatePlantsCooldown(_source, v.id, v.cooldown)
             end
         end
@@ -293,6 +308,7 @@ function setPlantCooldown(src, id, object, xpos, ypos, zpos)
     exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = 60 WHERE id = ?", {
         id
     })
+    print(id)
     TriggerClientEvent("moonshiner:deleteplant", src, id, object, xpos, ypos, zpos)
 
 end

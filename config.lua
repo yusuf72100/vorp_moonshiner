@@ -4,7 +4,7 @@ Config.Locale = 'en'
 
 Config.mashProp = "p_boxcar_barrel_09a" -- object that will be displayed, when u place the mash barrel
 Config.brewProp = "mp001_p_mp_still02x" -- object that will be displayed, when u place the moonshine destille
-Config.regrow = 60000
+
 -- here you can configure which mashes you can craft and what items do You need for the prducing of the mash
 Config.mashes = {
     ['tropicalPunchMash'] = { -- ['DB_ItemName'] here you define the mash

@@ -391,14 +391,14 @@ Citizen.CreateThread(function()
         local isNearBarrel = DoesObjectOfTypeExistAtCoords(x, y, z, 1.5, GetHashKey(Config.mashProp), true)
 		
 		if  isNearStill and inplacing == false and destroying == false then 
-            DrawTxt("Press [~e~G~q~] for moonshine menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
+            DrawTxt("Appuyez sur [~e~G~q~] pour le menu d'alcool", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('still')
 			end
         end
         
         if  isNearBarrel and isProcessingMash == false and inplacing == false and destroying == false  then 
-            DrawTxt("Press [~e~G~q~] for mash menu", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
+            DrawTxt("Appuyez sur [~e~G~q~] pour créer du moût", 0.50, 0.95, 0.7, 0.5, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0x760A9C6F) then --
                 WarMenu.OpenMenu('barrel')
 			end
@@ -710,7 +710,7 @@ AddEventHandler('moonshiner:deleteprop', function(id, object, xpos, ypos, zpos)
 
     if object == Config.brewProp then
 
-        TriggerEvent("vorp:TipBottom", "You took back the distillery", 4000)
+        TriggerEvent("vorp:TipBottom", "You took back the distrillery", 4000)
 
     else
 
