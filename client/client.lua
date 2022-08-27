@@ -150,6 +150,8 @@ Citizen.CreateThread(function()
         local cuffed = Citizen.InvokeNative(0x3AA24CCC0D451379, player)
         local reloading = IsPedReloading(player)
         local Coords = GetEntityCoords(player)
+
+        --1: if u want to add an plant, add him into the db and create an variable like down here
         local baybolete = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_baybolete01bx"), 0)            --all of your plants
         local blackcurrant = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("blackcurrant_p"), 0) 
         local Huckleberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_huckleberry01x"), 0) 
@@ -159,7 +161,7 @@ Citizen.CreateThread(function()
         local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
         local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
             
-
+        --1: and copy this if and make it the same but modify the hashKey of local prop like this : GetHashKey("your model") and create and server event too
         if baybolete and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')

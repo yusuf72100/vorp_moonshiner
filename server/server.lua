@@ -457,6 +457,28 @@ local Items = {
 }
 
 
+-- if u want to add an items for a plant, copy the event down here and do it the same for your new plant
+
+--[[RegisterServerEvent('vorp_moonshine:addItemyouplant')
+AddEventHandler('vorp_moonshine:addItemyouplant', function()
+    local _source = source
+    local FinalLoot = LootToGiveRaspberry(source)
+	local User = VorpCore.getUser(source).getUsedCharacter
+    for k,v in pairs(Items) do
+        
+		if v.youritem == FinalLoot then
+            local amount = math.random(v.min, v.max)
+            local invAvailable = VorpInv.canCarryItems(_source, amount)
+            if invAvailable ~= true then
+                TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You cannot wear more ~o~"..v.name, "INVENTORY_ITEMS", "itemname", 3000)
+            else
+                VorpInv.addItem(source, FinalLoot, amount)
+			    LootsToGive = {}
+			    TriggerClientEvent("vorp:NotifyLeft",_source, "Collect","You got ~o~"..amount.." "..v.name, "INVENTORY_ITEMS", "itemname", 3000)
+            end
+		end
+    end
+end)]]--
 
 RegisterServerEvent('vorp_moonshine:addItemraspberry')
 AddEventHandler('vorp_moonshine:addItemraspberry', function()
