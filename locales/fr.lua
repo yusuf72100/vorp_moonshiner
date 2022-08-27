@@ -1,4 +1,4 @@
-Locales['en'] = {
+Locales['fr'] = {
     ['menu_moonshine'] = '[G] Moonshine Menu',
     ['menu_mash'] = '[G] Moût Menu',
     ['search_for_item'] = '[G] Rechercher ',
