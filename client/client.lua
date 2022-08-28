@@ -161,7 +161,7 @@ Citizen.CreateThread(function()
         local blackberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_blackberry01x"), 0) 
         local raspberry = DoesObjectOfTypeExistAtCoords(Coords.x, Coords.y, Coords.z, 1.0, GetHashKey("s_inv_raspberry01x"), 0) 
             
-        --1: and copy this if and make it the same but modify the hashKey of local prop like this : GetHashKey("your model") and create and server event too
+
         if baybolete and not mount and not ragdol and not cuffed and not reloading and not isdead then
             near = 5
             local plant = CreateVarString(10, 'LITERAL_STRING', 'Récolter')
@@ -177,12 +177,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_baybolete01bx"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "s_inv_baybolete01bx", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItembay")
 
                 Wait(2000)
@@ -204,12 +204,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_blackberry01x"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "s_inv_blackberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemblackberry")
 
                 Wait(2000)
@@ -232,12 +232,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_huckleberry01x"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "s_inv_huckleberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemhuck")
 
                 Wait(2000)
@@ -259,12 +259,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("wildmint_p"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "wildmint_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemmint")
 
                 Wait(2000)
@@ -286,12 +286,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("ginseng_p"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "ginseng_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemginseng")
 
                 Wait(2000)
@@ -313,12 +313,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("alaskanginseng_p"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "alaskanginseng_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemalgin")
 
                 Wait(2000)
@@ -340,13 +340,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
+                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("blackcurrant_p"), false, false, false)
+                local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "blackcurrant_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
                 Wait(2300)
                 active = false
                 ClearPedTasks(playerPed)
-                local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("blackcurrant_p"), false, false, false)
-                local plantsCoords = GetEntityCoords(prop)
-                TriggerServerEvent("moonshiner:searchPlant", "blackcurrant_p", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
                 TriggerServerEvent("vorp_moonshine:addItemblack")
 
                 Wait(2000)
@@ -368,12 +367,12 @@ Citizen.CreateThread(function()
                 end
 
                 TaskPlayAnim(playerPed, "mech_pickup@plant@burdock", "base", 8.0, -0.5, -1, 2, 0, true, 0, false, 0, false)
-                Wait(2300)
-                active = false
-                ClearPedTasks(playerPed)
                 local prop = GetClosestObjectOfType(Coords.x, Coords.y, Coords.z, 2.0, GetHashKey("s_inv_raspberry01x"), false, false, false)
                 local plantsCoords = GetEntityCoords(prop)
                 TriggerServerEvent("moonshiner:searchPlant", "s_inv_raspberry01x", plantsCoords.x, plantsCoords.y, plantsCoords.z, rid)
+                Wait(2300)
+                active = false
+                ClearPedTasks(playerPed)
                 TriggerServerEvent("vorp_moonshine:addItemraspberry")
 
                 Wait(2000)
