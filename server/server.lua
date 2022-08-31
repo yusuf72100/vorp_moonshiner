@@ -279,7 +279,7 @@ end
 function updatePlantsCooldown(src, id, cooldown)
     local newcooldown = cooldown - 1 
 
-    if newcooldown > 0 then
+    if cooldown > 0 then
         exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = ? WHERE id = ?", {
             newcooldown,
             id
