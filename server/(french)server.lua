@@ -271,7 +271,6 @@ function initmoonshine()
             print("^2[Moonshiner]: placed object", v.xpos, v.ypos, v.zpos, v.object)
         end
     end)
-
 end
 
 function setInnactif(src, id, object, xpos, ypos, zpos)
@@ -286,11 +285,13 @@ end
 function updatePlantsCooldown(src, id, cooldown)
     local newcooldown = cooldown - 1 
 
-    exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = ? WHERE id = ?", {
-        newcooldown,
-        id
-    })
-    TriggerClientEvent("moonshiner:deleteplant", src, id, object, xpos, ypos, zpos)
+    if newcooldown > 0 then
+        exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = ? WHERE id = ?", {
+            newcooldown,
+            id
+        })
+        TriggerClientEvent("moonshiner:deleteplant", src, id, object, xpos, ypos, zpos)
+    end
 
 end
 

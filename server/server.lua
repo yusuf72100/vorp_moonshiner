@@ -279,11 +279,13 @@ end
 function updatePlantsCooldown(src, id, cooldown)
     local newcooldown = cooldown - 1 
 
-    exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = ? WHERE id = ?", {
-        newcooldown,
-        id
-    })
-    TriggerClientEvent("moonshiner:deleteplant", src, id, object, xpos, ypos, zpos)
+    if newcooldown > 0 then
+        exports.ghmattimysql:execute( "UPDATE moonshiner_plants SET cooldown = ? WHERE id = ?", {
+            newcooldown,
+            id
+        })
+        TriggerClientEvent("moonshiner:deleteplant", src, id, object, xpos, ypos, zpos)
+    end
 
 end
 
@@ -693,7 +695,7 @@ function LootToGiveginseng(source)
 		local picked = LootsToGive[value]
 		return picked
 	end
-end
+end 
 function LootToGiveblack(source)
     local LootsToGive = {}
     for k,v in pairs(Items) do
